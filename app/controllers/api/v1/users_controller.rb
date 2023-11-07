@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
     def index
-        @users = User.all
+        @users = User.all.select('id, username, created_at, updated_at')
 
         render json: @users
     end
