@@ -17,7 +17,10 @@ class Api::V1::UsersController < ApplicationController
             end
         else
             user = User.new(user_params)
-            render json: { id: user.id, username: user.username }if user.save
+            if user.save
+                ActionCable.server.broadcast "user_appearance", { id: user.id, username: user.username }
+                render json: { id: user.id, username: user.username }
+            end
         end
     end
 
