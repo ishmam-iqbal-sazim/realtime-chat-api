@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+    before_action :doorkeeper_authorize!, only: :index
+
     def index
         @users = User.all.select('id, username, created_at, updated_at')
 
@@ -10,11 +12,7 @@ class Api::V1::UsersController < ApplicationController
         password = user_params[:password]
         
         if existing_user = User.find_by_username(username)
-            if authenticate(existing_user, password)
-                render json: { id: existing_user.id, username: existing_user.username }
-            else
-               render json: { error: "Invalid credentials" }, status: :unauthorized 
-            end
+            render json: { error: "Username already exists"}, status: :unprocessable_entity
         else
             user = User.new(user_params)
             if user.save
@@ -28,9 +26,5 @@ class Api::V1::UsersController < ApplicationController
 
     def user_params
         params.require(:user).permit(:username, :password)
-    end
-
-    def authenticate(user, password)
-        user.password == password
     end
 end

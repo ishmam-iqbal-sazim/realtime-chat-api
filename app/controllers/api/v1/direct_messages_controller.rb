@@ -1,4 +1,6 @@
 class Api::V1::DirectMessagesController < ApplicationController
+    before_action :doorkeeper_authorize!
+
     def index
         current_user = params[:current_user]
         chatting_with = params[:chatting_with]

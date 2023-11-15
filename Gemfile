@@ -48,3 +48,5 @@ group :development do
 
 end
 
+
+gem "doorkeeper", "~> 5.6"
