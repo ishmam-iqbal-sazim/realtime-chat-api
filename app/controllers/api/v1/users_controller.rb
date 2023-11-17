@@ -1,8 +1,10 @@
 class Api::V1::UsersController < ApplicationController
-    before_action :doorkeeper_authorize!, only: :index
+    skip_before_action :doorkeeper_authorize!, only: :create
 
     def index
-        @users = User.all.select('id, username, created_at, updated_at')
+        authorize User
+
+        @users = User.where.not(id: current_user.id).select('id, username, created_at, updated_at')
 
         render json: @users
     end

@@ -1,8 +1,5 @@
 class Api::V1::DirectMessagesController < ApplicationController
-    before_action :doorkeeper_authorize!
-
     def index
-        current_user = params[:current_user]
         chatting_with = params[:chatting_with]
 
         if current_user && chatting_with
@@ -16,9 +13,10 @@ class Api::V1::DirectMessagesController < ApplicationController
     end
 
     def new
-        message = DirectMessage.new(message_params)
-        sender_id = params[:sender_id]
+        sender_id = current_user.id
         receiver_id = params[:receiver_id]
+
+        message = DirectMessage.new(message_params)
 
         if message.save
             DirectMessageJob.perform_now(message, sender_id, receiver_id)
@@ -30,6 +28,6 @@ class Api::V1::DirectMessagesController < ApplicationController
     private
 
     def message_params
-        params.permit(:content, :sender_id, :receiver_id)
+        params.require(:direct_message).permit(:content, :sender_id, :receiver_id)
     end
 end

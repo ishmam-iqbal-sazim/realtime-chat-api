@@ -1,4 +1,6 @@
 class Api::V1::SessionsController < ApplicationController
+  skip_before_action :doorkeeper_authorize!
+
   def new
     username = session_params[:username]
     password = session_params[:password]
