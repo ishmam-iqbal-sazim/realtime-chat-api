@@ -52,3 +52,5 @@ end
 gem "doorkeeper", "~> 5.6"
 
 gem "pundit"
+
+gem "interactor"

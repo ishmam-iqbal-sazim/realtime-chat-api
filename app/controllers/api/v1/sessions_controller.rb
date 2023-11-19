@@ -1,18 +1,13 @@
 class Api::V1::SessionsController < ApplicationController
   skip_before_action :doorkeeper_authorize!
 
-  def new
-    username = session_params[:username]
-    password = session_params[:password]
+  def login_user 
+    result = LoginUser.call(session_params: session_params)
 
-    if existing_user = User.find_by_username(username)
-      if authenticate(existing_user, password)
-        render json: { id: existing_user.id, username: existing_user.username }
-      else
-        render json: { error: "Invalid credentials" }, status: :unauthorized
-      end
+    if result.success?
+      render json: result.user_data
     else
-      render json: { error: "User does not exist" }, status: :not_found
+      render json: { error: result.error }, status: result.status
     end
   end
 
@@ -22,7 +17,4 @@ class Api::V1::SessionsController < ApplicationController
     params.require(:session).permit(:username, :password)
   end
 
-  def authenticate(user, password)
-    user.password == password
-  end
 end
