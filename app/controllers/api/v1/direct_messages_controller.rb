@@ -1,6 +1,6 @@
 class Api::V1::DirectMessagesController < ApplicationController
     def chat_history
-        result = ChatHistory.call(current_user: current_user, params: params)
+        result = ChatHistoryInteractor.call(current_user: current_user, params: params)
 
         if result.success?
             render json: result.messages
@@ -8,7 +8,7 @@ class Api::V1::DirectMessagesController < ApplicationController
     end
 
     def new_message
-        result = NewMessage.call(current_user: current_user, message_params: message_params)
+        result = NewMessageInteractor.call(current_user: current_user, message_params: message_params)
 
         if result.success?
             render json: result.message

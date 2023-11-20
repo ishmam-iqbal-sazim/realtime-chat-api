@@ -1,16 +1,17 @@
 class Api::V1::UsersController < ApplicationController
+  include Panko
   skip_before_action :doorkeeper_authorize!, only: :create_new_user
 
   def index
     authorize User
 
-    @users = User.where.not(id: current_user.id).select('id, username, created_at, updated_at')
+    users = User.where.not(id: current_user.id).select('id, username, created_at, updated_at')
 
-    render json: @users
+    render json: ArraySerializer.new(users, each_serializer: UserSerializer).to_json
   end
 
   def create_new_user
-    result = CreateNewUser.call(user_params: user_params)
+    result = CreateNewUserInteractor.call(user_params: user_params)
 
     if result.success?
       render json: result.user_data

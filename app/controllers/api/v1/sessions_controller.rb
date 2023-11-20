@@ -2,7 +2,7 @@ class Api::V1::SessionsController < ApplicationController
   skip_before_action :doorkeeper_authorize!
 
   def login_user 
-    result = LoginUser.call(session_params: session_params)
+    result = LoginUserInteractor.call(session_params: session_params)
 
     if result.success?
       render json: result.user_data
@@ -16,5 +16,4 @@ class Api::V1::SessionsController < ApplicationController
   def session_params
     params.require(:session).permit(:username, :password)
   end
-
 end

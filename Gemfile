@@ -54,3 +54,5 @@ gem "doorkeeper", "~> 5.6"
 gem "pundit"
 
 gem "interactor"
+
+gem "panko_serializer"
