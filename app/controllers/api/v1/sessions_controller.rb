@@ -16,5 +16,4 @@ class Api::V1::SessionsController < ApplicationController
   def session_params
     params.require(:session).permit(:username, :password)
   end
-
 end

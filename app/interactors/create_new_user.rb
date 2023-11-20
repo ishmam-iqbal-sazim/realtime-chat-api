@@ -1,5 +1,6 @@
 class CreateNewUser
   include Interactor
+  include Panko
 
   def call
     username = context.user_params[:username]
@@ -23,6 +24,6 @@ class CreateNewUser
   end
 
   def set_user_context_data(user)
-    context.user_data = { id: user.id, username: user.username }
+    context.user_data = UserSerializer.new.serialize_to_json(user)
   end
 end

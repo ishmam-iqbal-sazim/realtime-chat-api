@@ -1,5 +1,6 @@
 class ChatHistory
     include Interactor
+    include Panko
 
     def call
         chatting_with = context.params[:chatting_with]
@@ -9,7 +10,11 @@ class ChatHistory
             messages_sent_by_current_user = DirectMessage.where(sender_id: current_user, receiver_id: chatting_with)
             messages_sent_by_chatting_user = DirectMessage.where(sender_id: chatting_with, receiver_id: current_user)
 
-            context.messages = messages_sent_by_current_user.or(messages_sent_by_chatting_user)
+            messages = messages_sent_by_current_user.or(messages_sent_by_chatting_user)
+
+            serialized_messages = ArraySerializer.new(messages, each_serializer: MessagesSerializer).to_json
+
+            context.messages = serialized_messages
         end
     end
 end
