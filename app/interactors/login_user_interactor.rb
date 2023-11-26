@@ -23,6 +23,12 @@ class LoginUserInteractor
     end
 
     def set_user_context_data(user)
-        context.user_data = UserSerializer.new.serialize_to_json(user)
+        user_data = UserSerializer.new.serialize(user)
+
+        access_token = GenerateAccessTokenInteractor.call(user: user).access_token
+
+        user_data["token"] = access_token
+
+        context.user_data = user_data.to_json
     end
 end
