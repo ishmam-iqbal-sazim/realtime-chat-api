@@ -1,6 +1,5 @@
 class ChatChannel < ApplicationCable::Channel
   def subscribed
-    stop_all_streams
     sender_id = params[:sender_id]
     receiver_id = params[:receiver_id]
 

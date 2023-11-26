@@ -24,6 +24,10 @@ class CreateNewUserInteractor
   end
 
   def set_user_context_data(user)
-    context.user_data = UserSerializer.new.serialize_to_json(user)
+    user_data = UserSerializer.new.serialize(user)
+
+    user_data["token"] = GenerateAccessTokenInteractor.call(user: user).access_token
+
+    context.user_data = user_data.to_json
   end
 end

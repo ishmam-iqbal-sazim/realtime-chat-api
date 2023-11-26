@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       post "users", to: "users#create_new_user"
 
       post "login", to: "sessions#login_user"
+      post "revoke_token", to: "sessions#revoke_token"
 
       get "messages", to: "direct_messages#chat_history"
       post "messages", to: "direct_messages#new_message"

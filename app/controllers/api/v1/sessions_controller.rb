@@ -11,6 +11,16 @@ class Api::V1::SessionsController < ApplicationController
     end
   end
 
+  def revoke_token
+    result = RevokeTokenInteractor.call(token: params[:token])
+
+    if result.success?
+      render json: { message: 'Token successfully revoked' }
+    else
+      render json: { error: result.error }
+    end
+  end
+
   private
 
   def session_params
