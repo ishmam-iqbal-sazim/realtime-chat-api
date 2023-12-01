@@ -1,18 +1,21 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :doorkeeper_authorize!
+  skip_before_action :doorkeeper_authorize!, only: [:login_user]
 
   def login_user 
-    result = LoginUserInteractor.call(session_params: session_params)
+    result = Users::LoginUser.call(session_params: session_params)
 
     if result.success?
-      render json: result.user_data
+      serialized_user = UserSerializer.new.serialize(result.user_data)
+      serialized_user["token"] = result.access_token
+
+      render json: serialized_user
     else
       render json: { error: result.error }, status: result.status
     end
   end
 
   def revoke_token
-    result = RevokeTokenInteractor.call(token: params[:token])
+    result = Users::RevokeToken.call(token: params[:token])
 
     if result.success?
       render json: { message: 'Token successfully revoked' }

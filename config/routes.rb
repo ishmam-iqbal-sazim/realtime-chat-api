@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
-      get "users", to: "users#index"
+      get "users", to: "users#get_all_users"
       post "users", to: "users#create_new_user"
 
       post "login", to: "sessions#login_user"
