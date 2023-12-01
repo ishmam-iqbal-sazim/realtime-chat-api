@@ -1,21 +1,35 @@
 class Api::V1::DirectMessagesController < ApplicationController
+    include Panko
+    before_action :authorize_direct_message
+
     def chat_history
-        result = ChatHistoryInteractor.call(current_user: current_user, params: params)
+        result = Messages::ChatHistory.call(current_user: current_user, params: params)
 
         if result.success?
-            render json: result.messages
+            serialized_messages = ArraySerializer.new(result.messages, each_serializer: MessageSerializer).to_json
+            render json: serialized_messages
+        else
+            render json: { error: result.error }, status: result.status
         end
     end
 
     def new_message
-        result = NewMessageInteractor.call(current_user: current_user, message_params: message_params)
+        result = Messages::NewMessageFlow.call(current_user: current_user, message_params: message_params)
 
         if result.success?
-            render json: result.message
+            serialized_message = MessageSerializer.new.serialize_to_json(result.message)
+
+            render json: serialized_message
+        else
+            render json: { error: result.error }
         end
     end
 
     private
+
+    def authorize_direct_message
+        authorize DirectMessage
+    end
 
     def message_params
         params.require(:direct_message).permit(:content, :sender_id, :receiver_id)

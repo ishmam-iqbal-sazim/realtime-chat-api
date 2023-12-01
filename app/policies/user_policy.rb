@@ -1,5 +1,5 @@
 class UserPolicy < ApplicationPolicy
-    def index?
-      true
+    def get_all_users?
+      user.present?
     end
 end
