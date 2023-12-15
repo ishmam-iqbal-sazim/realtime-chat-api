@@ -56,3 +56,11 @@ gem "pundit"
 gem "interactor"
 
 gem "panko_serializer"
+
+gem "minitest"
+
+gem "mocha"
+
+gem "byebug"
+
+gem "json"
