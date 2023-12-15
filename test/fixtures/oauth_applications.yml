@@ -1,0 +1,12 @@
+# test/fixtures/doorkeeper_applications.yml
+
+one:
+  id: 1
+  name: "Android client"
+  uid: "B_hwvv-JxtjD3QEph4sN9BRwuKYvv34Oq45naHgFEF4"
+  secret: "GSruznCdQM3no8VqV9xIRAx2msiNs0ip6JO_Xgzml7A"
+  redirect_uri: ""
+  scopes: ""
+  confidential: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

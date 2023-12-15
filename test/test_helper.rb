@@ -3,6 +3,7 @@ require_relative "../config/environment"
 require "rails/test_help"
 require 'minitest/autorun'
 require 'mocha/minitest'
+require 'mocha'
 require 'minitest/unit'
 require 'minitest'
 require 'json'
