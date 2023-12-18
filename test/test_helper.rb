@@ -29,3 +29,15 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+class ActionController::TestCase
+  def setup_controller_with_fake_user
+    fake_user = User.find_by(id: 1)
+
+    token = mock
+    token.stubs(:acceptable?).returns(true)
+    token.stubs(:resource_owner_id).returns(fake_user.id)
+
+    @controller.stubs(:doorkeeper_token).returns(token)
+  end
+end
