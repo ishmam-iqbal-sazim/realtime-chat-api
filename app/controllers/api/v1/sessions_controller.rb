@@ -20,7 +20,7 @@ class Api::V1::SessionsController < ApplicationController
     if result.success?
       render json: { message: 'Token successfully revoked' }
     else
-      render json: { error: result.error }
+      render json: { error: "Token not found" }, status: :not_found
     end
   end
 
