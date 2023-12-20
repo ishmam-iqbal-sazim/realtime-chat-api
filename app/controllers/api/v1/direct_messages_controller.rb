@@ -9,7 +9,7 @@ class Api::V1::DirectMessagesController < ApplicationController
             serialized_messages = ArraySerializer.new(result.messages, each_serializer: MessageSerializer).to_json
             render json: serialized_messages
         else
-            render json: { error: result.error }, status: result.status
+            render json: { error: result.error }, status: :not_found
         end
     end
 
@@ -21,7 +21,7 @@ class Api::V1::DirectMessagesController < ApplicationController
 
             render json: serialized_message
         else
-            render json: { error: result.error }
+            render json: { error: result.error }, status: :bad_request
         end
     end
 
