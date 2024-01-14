@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
+      get "stream", to: "server_events#index"
+
       get "users", to: "users#get_all_users"
       post "users", to: "users#create_new_user"
 
@@ -13,7 +15,7 @@ Rails.application.routes.draw do
       get "messages", to: "direct_messages#chat_history"
       post "messages", to: "direct_messages#new_message"
 
-      mount ActionCable.server => '/cable'
+      mount ActionCable.server => '/cable_socket'
     end
   end
 end
